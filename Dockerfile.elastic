@@ -1,0 +1,10 @@
+# upstream: elastic/elasticsearch
+FROM elasticsearch:7.14.2@sha256:f05ab7f4d2aa5040813a0ea4eb76fa99bb31459937a4539efe2f2c2dbb2109fb
+
+# Huly's full-text service is built against Elasticsearch 7.14 and extracts text from uploaded files with the ingest-attachment plugin.
+USER root
+RUN elasticsearch-plugin install --batch ingest-attachment
+
+COPY --chmod=755 elastic-boot.sh /usr/local/bin/elastic-boot.sh
+
+ENTRYPOINT ["/usr/local/bin/elastic-boot.sh"]

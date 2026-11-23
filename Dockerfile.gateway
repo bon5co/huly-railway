@@ -1,0 +1,19 @@
+# upstream: hcengineering/huly-selfhost
+FROM hardcoreeng/tool:v0.7.426@sha256:caf073ca3f0be79e350267b82720b3b6461cfb9511f92e33b2da749a803614e6
+
+# Huly (open-source project management, Linear / Jira / Notion / Slack alternative) is, upstream, a compose stack of fourteen
+# containers behind an nginx gateway. On Railway the gateway is its own service: it is the only public one, it serves Railway's
+# healthcheck by itself, and it carries the shared secrets that every other service references. The maintenance tool image is the
+# base because the first administrator is created with the tool Huly ships for exactly that (`create-account`), which needs node
+# and the bundled tool script that this image already holds.
+USER root
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends nginx-light curl gettext-base ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY nginx.conf.template /etc/nginx/huly.conf.template
+COPY --chmod=755 gateway-boot.sh /usr/local/bin/gateway-boot.sh
+COPY --chmod=755 huly-bootstrap.sh /usr/local/bin/huly-bootstrap.sh
+
+ENTRYPOINT ["/usr/local/bin/gateway-boot.sh"]
+CMD []
