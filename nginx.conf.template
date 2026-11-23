@@ -51,18 +51,18 @@ http {
             proxy_pass http://$up;
         }
         location /_accounts {
-            rewrite ^/_accounts(/.*)$ $1 break;
             set $up account.railway.internal:3000;
+            rewrite ^/_accounts(/.*)$ $1 break;
             proxy_pass http://$up;
         }
         location /_collaborator {
-            rewrite ^/_collaborator(/.*)$ $1 break;
             set $up collaborator.railway.internal:3078;
+            rewrite ^/_collaborator(/.*)$ $1 break;
             proxy_pass http://$up;
         }
         location /_transactor {
-            rewrite ^/_transactor(/.*)$ $1 break;
             set $up transactor.railway.internal:3333;
+            rewrite ^/_transactor(/.*)$ $1 break;
             proxy_pass http://$up;
         }
         location ~ ^/eyJ {
@@ -70,13 +70,13 @@ http {
             proxy_pass http://$up;
         }
         location /_rekoni {
-            rewrite ^/_rekoni(/.*)$ $1 break;
             set $up rekoni.railway.internal:4004;
+            rewrite ^/_rekoni(/.*)$ $1 break;
             proxy_pass http://$up;
         }
         location /_stats {
-            rewrite ^/_stats(/.*)$ $1 break;
             set $up stats.railway.internal:4900;
+            rewrite ^/_stats(/.*)$ $1 break;
             proxy_pass http://$up;
         }
     }
